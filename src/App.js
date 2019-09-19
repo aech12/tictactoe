@@ -6,60 +6,56 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      history: [
-        {squares: Array(9).fill(null)}
-      ],
-      xIsNext: true,
-      stepCount: 0
+      history: [{ squares: Array(9).fill(null) }],
+      nextPlayer: 'X',
+      step: 0
+    };
+  }
+
+  handleClick = i => {
+    const step = this.state.step;
+    const history = this.state.history.slice(0, step + 1);
+    const currentSquares = history[history.length - 1].squares.slice();
+    checkIfGameIsOver(currentSquares, i);
+
+    if (this.state.nextPlayer === 'O') {
+      currentSquares[i] = 'X';
+    } else {
+      currentSquares[i] = 'O';
     }
-  }
-
-  handleClick = (i) => {
-    // const history = this.state.history;
-    // ^ this leads to a bug when clicking back on history ^
-    const step = this.state.stepCount;
-    const history = this.state.history.slice(0, step+1);
-    const squares = history[history.length-1].squares.slice();
-    if (calculateWinner(squares)||squares[i]) {return;}
-
-    if (this.state.xIsNext) {squares[i]='X'}
-    else {squares[i]='O'}
     this.setState({
-      history: history.concat([{squares}]),
-      xIsNext: !this.state.xIsNext,
-      stepCount: history.length
-    })
-    console.log(this.state.history)
-  }
-  jumpTo=(i)=> {
+      history: history.concat([{ squares: currentSquares }]),
+      nextPlayer: currentSquares[i],
+      step: step + 1
+    });
+  };
+  jumpTo = i => {
     this.setState({
-      stepCount: i,
-      xIsNext: (i % 2) === 0,
-    })
-  }
+      step: i,
+      nextPlayer: i % 2 === 0 ? 'X' : 'O'
+    });
+  };
 
   render() {
     const history = this.state.history;
-    const squares = history[history.length-1].squares.slice();
+    const currentSquares = history[history.length - 1].squares.slice();
     let status;
-    
-    const winner = calculateWinner(squares)
+
+    const winner = calculateWinner(currentSquares);
     if (winner) {
-      status = `Winner is ${winner}`
+      status = `Winner is ${winner}`;
     } else {
-      status = `Next player is: ${this.state.xIsNext?'X':'O'}`
+      status = `Next player is: ${this.state.nextPlayer}`;
     }
-    const moves = 
-    history.map((d, i)=> {
-      let msg = i?`Go to move: #${i}`:`Go to game start`
+    // set state with handleClick in Board instead of here for extra challenge
+    const goToMove = history.map((d, index) => {
+      let msg = index ? `Go to move: #${index}` : `Go to game start`;
       return (
-        <li key={i}>
-          <button onClick={()=> this.jumpTo(i)}>
-            {`${msg}`}
-          </button>
+        <li key={index}>
+          <button onClick={() => this.jumpTo(index)}>{`${msg}`}</button>
         </li>
-      )
-    })
+      );
+    });
 
     return (
       <div className='game'>
@@ -67,19 +63,19 @@ class App extends Component {
           <div className='status'>{status}</div>
           <div className='board'>
             <Board
-              squares={history[this.state.stepCount].squares}
+              squares={history[this.state.step].squares}
               onClick={this.handleClick}
             />
           </div>
         </div>
-        <ul>{moves}</ul>
+        <ul>{goToMove}</ul>
       </div>
-    )
+    );
   }
 }
 
 function calculateWinner(squares) {
-  const lines = [
+  const winnerLines = [
     [0, 1, 2],
     [3, 4, 5],
     [6, 7, 8],
@@ -87,15 +83,20 @@ function calculateWinner(squares) {
     [1, 4, 7],
     [2, 5, 8],
     [0, 4, 8],
-    [2, 4, 6],
+    [2, 4, 6]
   ];
-  for (let i = 0; i < lines.length; i++) {
-    const [a, b, c] = lines[i];
+  for (let i = 0; i < winnerLines.length; i++) {
+    const [a, b, c] = winnerLines[i];
     if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
       return squares[a];
     }
   }
   return null;
 }
+const checkIfGameIsOver = (currentSquares, i) => {
+  if (calculateWinner(currentSquares) || currentSquares[i]) {
+    return;
+  }
+};
 
 export default App;
