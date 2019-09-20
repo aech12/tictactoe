@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './components/All.css';
 import Board from './components/Board';
+import PregameOptions from './components/PregameOptions';
 
 class App extends Component {
   constructor(props) {
@@ -8,7 +9,9 @@ class App extends Component {
     this.state = {
       history: [{ squares: Array(9).fill(null) }],
       nextPlayer: 'X',
-      step: 0
+      step: 0,
+      playerOneName: 'Player One',
+      playerTwoName: 'Player Two'
     };
   }
 
@@ -36,6 +39,12 @@ class App extends Component {
     });
   };
 
+  changePlayerName = (e, playerName) => {
+    this.setState({
+      [playerName]: e.target.value
+    });
+  };
+
   render() {
     const history = this.state.history;
     const currentSquares = history[history.length - 1].squares.slice();
@@ -43,13 +52,13 @@ class App extends Component {
 
     const winner = calculateWinner(currentSquares);
     if (winner) {
-      status = `Winner is ${winner}`;
+      status = `Winner is ${winner}!`;
     } else {
       status = `Next player is: ${this.state.nextPlayer}`;
     }
     // set state with handleClick in Board instead of here for extra challenge
     const goToMove = history.map((d, index) => {
-      let msg = index ? `Go to move: #${index}` : `Go to game start`;
+      let msg = `Turn #${index}`;
       return (
         <li key={index}>
           <button onClick={() => this.jumpTo(index)}>{`${msg}`}</button>
@@ -59,13 +68,22 @@ class App extends Component {
 
     return (
       <div className='game'>
-        <div className='leftside'>
-          <div className='status'>{status}</div>
-          <div className='board'>
-            <Board
-              squares={history[this.state.step].squares}
-              onClick={this.handleClick}
-            />
+        <div>
+          <PregameOptions
+            playerOneName={this.state.playerOneName}
+            playerTwoName={this.state.playerTwoName}
+            changePlayerName={this.changePlayerName}
+          />
+        </div>
+        <div className=''>
+          <div className='leftside'>
+            <div className='status'>{status}</div>
+            <div className='board'>
+              <Board
+                squares={history[this.state.step].squares}
+                onClick={this.handleClick}
+              />
+            </div>
           </div>
         </div>
         <ul>{goToMove}</ul>

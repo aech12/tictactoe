@@ -6,12 +6,11 @@ History is stored an object with arrays. Each array contains the board at that c
 Todo
 
 Style
-
 - Make squares bigger and center game. Add media queries.
 - Change "React App" title and icon
 - Add night-mode
-  Functionality
+
+Functionality
 - Add "Introduce name Player 1"
-- Remove "Go To Game Start" when game isnt started
 - Add Play vs Computer or PvP
 - Add restart game option
