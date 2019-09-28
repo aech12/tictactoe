@@ -2,6 +2,11 @@ import React, { Component } from 'react';
 import './components/All.css';
 import Board from './components/Board';
 import PregameOptions from './components/PregameOptions';
+import {
+  calculateWinner,
+  checkIfGameIsOver,
+  pickRandomMoveFromCalculatedMoves
+} from './helper/usefulFunctions';
 
 class App extends Component {
   constructor(props) {
@@ -11,7 +16,9 @@ class App extends Component {
       nextPlayer: 'X',
       step: 0,
       playerOneName: 'Player One',
-      playerTwoName: 'Player Two'
+      playerTwoName: 'Player Two',
+      vsPC: true,
+      noPointerEvents: ''
     };
   }
 
@@ -19,9 +26,13 @@ class App extends Component {
     const step = this.state.step;
     const history = this.state.history.slice(0, step + 1);
     const currentSquares = history[history.length - 1].squares.slice();
-    checkIfGameIsOver(currentSquares, i);
+    const nextPlayer = this.state.nextPlayer;
 
-    if (this.state.nextPlayer === 'O') {
+    if (checkIfGameIsOver(currentSquares, i)) {
+      return;
+    }
+
+    if (nextPlayer === 'O') {
       currentSquares[i] = 'X';
     } else {
       currentSquares[i] = 'O';
@@ -31,7 +42,14 @@ class App extends Component {
       nextPlayer: currentSquares[i],
       step: step + 1
     });
+    if (this.state.vsPC) {
+      this.setState({ noPointerEvents: 'no-pointer-events' });
+    }
+    setTimeout(() => {
+      this.computerMove();
+    }, 1000);
   };
+
   jumpTo = i => {
     this.setState({
       step: i,
@@ -45,18 +63,54 @@ class App extends Component {
     });
   };
 
+  startGame = () => {
+    // no pointer events until this is clicked
+  };
+
+  restartGame = () =>
+    this.setState({ step: 0, history: [{ squares: Array(9).fill(null) }] });
+
+  gameIsVsPC = vsPC => this.setState({ vsPC });
+
+  computerMove = () => {
+    // return;
+    const step = this.state.step;
+    const history = this.state.history.slice(0, step + 1);
+    const currentSquares = history[history.length - 1].squares.slice();
+    const nextPlayer = this.state.nextPlayer;
+
+    let moveIndex = pickRandomMoveFromCalculatedMoves(
+      currentSquares,
+      nextPlayer
+    );
+    if (checkIfGameIsOver(currentSquares, moveIndex)) {
+      return;
+    }
+    currentSquares[moveIndex] = this.state.nextPlayer === 'O' ? 'X' : 'O';
+
+    this.setState({
+      history: history.concat([{ squares: currentSquares }]),
+      nextPlayer: currentSquares[moveIndex],
+      step: step + 1,
+      noPointerEvents: ''
+    });
+  };
+
   render() {
     const history = this.state.history;
     const currentSquares = history[history.length - 1].squares.slice();
+    let currentPlayer =
+      this.state.nextPlayer === 'X'
+        ? this.state.playerOneName
+        : this.state.playerTwoName;
     let status;
 
     const winner = calculateWinner(currentSquares);
     if (winner) {
-      status = `Winner is ${winner}!`;
+      status = `Winner is ${currentPlayer}!`;
     } else {
-      status = `Next player is: ${this.state.nextPlayer}`;
+      status = `It's ${currentPlayer}'s turn`;
     }
-    // set state with handleClick in Board instead of here for extra challenge
     const goToMove = history.map((d, index) => {
       let msg = `Turn #${index}`;
       return (
@@ -73,12 +127,14 @@ class App extends Component {
             playerOneName={this.state.playerOneName}
             playerTwoName={this.state.playerTwoName}
             changePlayerName={this.changePlayerName}
+            startGame={this.startGame}
+            gameIsVsPC={this.gameIsVsPC}
           />
         </div>
         <div className=''>
           <div className='leftside'>
             <div className='status'>{status}</div>
-            <div className='board'>
+            <div className={`board ${this.state.noPointerEvents}`}>
               <Board
                 squares={history[this.state.step].squares}
                 onClick={this.handleClick}
@@ -86,35 +142,11 @@ class App extends Component {
             </div>
           </div>
         </div>
+        <button onClick={this.restartGame}>Play Again</button>
         <ul>{goToMove}</ul>
       </div>
     );
   }
 }
-
-function calculateWinner(squares) {
-  const winnerLines = [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8],
-    [0, 4, 8],
-    [2, 4, 6]
-  ];
-  for (let i = 0; i < winnerLines.length; i++) {
-    const [a, b, c] = winnerLines[i];
-    if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-      return squares[a];
-    }
-  }
-  return null;
-}
-const checkIfGameIsOver = (currentSquares, i) => {
-  if (calculateWinner(currentSquares) || currentSquares[i]) {
-    return;
-  }
-};
 
 export default App;

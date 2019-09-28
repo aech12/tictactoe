@@ -1,25 +1,42 @@
 import React from 'react';
 import './All.css';
 
-const PregameOptions = ({ playerOneName, playerTwoName, changePlayerName }) => {
+const PregameOptions = ({
+  playerOneName,
+  playerTwoName,
+  changePlayerName,
+  startGame,
+  gameIsVsPC
+}) => {
   return (
-    <form>
-      <button type='button' name='gameMode' value='Human vs Computer'>
-        Human vs Computer
-      </button>
-      <button type='button' name='gameMode' value='Human vs Human'>
-        Human vs Human
-      </button>
-      {/* <div>
+    <form onSubmit={startGame}>
+      <label>
         <input
           type='radio'
-          id='radio1'
+          onClick={() => gameIsVsPC(true)}
+          id='HvCradio'
           name='gameMode'
-          value='Human vs Computer'
-        >
-          Huamss
-        </input>
-      </div> */}
+        ></input>
+        Human vs Computer
+      </label>
+      <label>
+        <input
+          type='radio'
+          onClick={() => gameIsVsPC(false)}
+          id='HvHradio'
+          name='gameMode'
+        ></input>
+        Human vs Human
+      </label>
+      <p>
+        Play as:
+        <label>
+          <input type='radio' id='Xradio' name='XorO'></input>X
+        </label>
+        <label>
+          <input type='radio' id='Oradio' name='XorO'></input>O
+        </label>
+      </p>
       <p>P1 Name:</p>
       <input
         value={playerOneName}
