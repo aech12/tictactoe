@@ -5,13 +5,13 @@ History is stored an object with arrays. Each array contains the board at that c
 Todo
 Style
 - Make squares bigger and center game. Add media queries.
-- Change "React App" title and icon
 - Add night-mode
 - Board breaks when resize screen is smalls
 
 Functionality
-- Add option to play with X or O
-- Add caching to Minimax
+- Add option to play first or second (!!!)
+- Add caching to Minimax (!)
 - Check test 'counter winning moves' with board 'testCase'. Sometimes it fails.
+- Implement ref, let PregameOptions manage name state
 
 Bugs (!)

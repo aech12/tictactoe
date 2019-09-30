@@ -1,13 +1,26 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './All.css';
 
 const PregameOptions = ({
+  startGame,
+  gameIsVsPC,
   playerOneName,
   playerTwoName,
-  changePlayerName,
-  startGame,
-  gameIsVsPC
+  changePlayerName
 }) => {
+  //   const usePlayer = player => {
+  //     const [name, setName] = useState('');
+  //     const onChange = e => {
+  //       setName(e.target.value);
+  //     };
+  //     return {
+  //       name,
+  //       onChange
+  //     };
+  //   };
+  //   const p1 = usePlayer();
+  //   const p2 = usePlayer();
+
   return (
     <form onSubmit={startGame}>
       <label>
@@ -29,15 +42,16 @@ const PregameOptions = ({
         Human vs Human
       </label>
       <p>
-        Play as:
+        Play:
         <label>
-          <input type='radio' id='Xradio' name='XorO'></input>X
+          <input type='radio' id='Xradio' name='XorO'></input>First
         </label>
         <label>
-          <input type='radio' id='Oradio' name='XorO'></input>O
+          <input type='radio' id='Oradio' name='XorO'></input>Second
         </label>
       </p>
       <p>P1 Name:</p>
+      {/* <input value={p1.name} onChange={e => p1.onChange(e)}></input> */}
       <input
         value={playerOneName}
         onChange={e => changePlayerName(e, 'playerOneName')}

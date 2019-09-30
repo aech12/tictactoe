@@ -1,4 +1,5 @@
-html, body {
+html,
+body {
   height: 100%;
 }
 
@@ -9,7 +10,7 @@ html, body {
 .status {
   width: 210px;
   margin-bottom: 10px;
-  background: #49FF79;
+  background: #49ff79;
 }
 
 .board {
@@ -25,7 +26,7 @@ html, body {
   margin-right: -1px;
   margin-top: -1px;
   padding: 0;
-  
+
   height: 75px;
   width: 75px;
 
@@ -43,14 +44,14 @@ li {
 }
 
 button {
-  background: #00FF00;
+  background: #00ff00;
   border-radius: 5px;
   cursor: pointer;
   outline: none;
   overflow: hidden;
 }
 
-@media all and (max-width:230px) {
+@media all and (max-width: 230px) {
   .board {
     max-width: 180px;
     display: flex;
@@ -59,20 +60,22 @@ button {
   .square {
     height: 58px;
     width: 58px;
-
   }
 }
-@media all and (min-width:500px) {
+@media all and (min-width: 500px) {
   .game {
     display: flex;
     justify-content: space-around;
   }
 }
 
-
 /* Interesting way to just show one row! */
 /* .board-row:after {
   clear: both;
   content: "";
   display: table;
+} */
+
+/* .getNone {
+  display: none
 } */
