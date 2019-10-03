@@ -1,5 +1,21 @@
-.game {
+/*.game {
   margin: 10px;
+}*/
+@media (prefers-color-scheme: light) {
+  .square {
+    border: 1px solid #999;
+    background: white;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  .square {
+    border: 1px solid #ada6a6;
+    background: #3c4a56;
+    color: #ccbbbb;
+  }
+  .status {
+    color: #080808;
+  }
 }
 
 .status {
@@ -10,10 +26,9 @@
 
 .board {
   max-width: 231px;
+  display: block;
 }
 .square {
-  background: #fff;
-  border: 1px solid #999;
   float: left;
   font-size: 33px;
   font-weight: bold;
@@ -60,8 +75,6 @@ button {
 
 @media only screen and (min-width: 1024px) {
   .board {
-    max-width: 305px;
-    max-height: 305px;
     display: flex;
   }
   .square {

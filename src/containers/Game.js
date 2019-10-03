@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import Board from "../components/Board";
 import { Button } from "@material-ui/core";
 import "../App.css";
@@ -36,7 +36,7 @@ const Game = ({
         <div className={`board ${noPointerEvents}`}>
           <Board squares={history[step].squares} onClick={handleClick} />
         </div>
-        <div>
+        <div style={{ marginTop: "10px" }}>
           <Button variant="contained" color="primary" onClick={restartGame}>
             Play Again
           </Button>

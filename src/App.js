@@ -2,14 +2,18 @@ import React, { Component } from "react";
 import "./components/All.css";
 import "./App.css";
 import Game from "./containers/Game";
-import Board from "./components/Board";
 import PregameOptions from "./components/PregameOptions";
 import { calculateWinner, checkIfGameIsOver } from "./helper/usefulFunctions";
 import { minimax } from "./helper/minimax";
-import styles from "./styles.js";
-// import styled from 'styled-components';
 import "typeface-roboto";
-// import { makeStyles } from '@material-ui/core/styles';
+import { ThemeProvider } from "@material-ui/styles";
+import { createMuiTheme } from "@material-ui/core/styles";
+
+const theme = createMuiTheme({
+  palette: {
+    primary: { main: "#353643" }
+  }
+});
 
 class App extends Component {
   constructor(props) {
@@ -22,7 +26,7 @@ class App extends Component {
       playerTwoName: "P2",
       vsPC: true,
       noPointerEvents: "",
-      gameStarts: !false
+      gameStarts: false
     };
   }
 
@@ -120,40 +124,34 @@ class App extends Component {
     // #353643 rgba(255, 255, 255, 0.70)
 
     return (
-      <div
-        className="App"
-        // style={{
-        //   height: "100vh",
-        //   width: "100vw",
-        //   display: "flex",
-        //   justifyContent: "center",
-        //   alignContent: "center"
-        // }}
-      >
-        <div className="Game">
-          {this.state.gameStarts === true ? (
-            <Game
-              status={status}
-              noPointerEvents={this.state.noPointerEvents}
-              history={history}
-              step={this.state.step}
-              handleClick={this.handleClick}
-              restartGame={this.restartGame}
-              startGame={this.startGame}
-              jumpTo={this.jumpTo}
-            />
-          ) : (
-            <PregameOptions
-              playerOneName={this.state.playerOneName}
-              playerTwoName={this.state.playerTwoName}
-              changePlayerName={this.changePlayerName}
-              startGame={this.startGame}
-              gameIsVsPC={this.gameIsVsPC}
-              vsPC={this.state.vsPC}
-            />
-          )}
+      <ThemeProvider theme={theme}>
+        <div className="App">
+          <div className="Game">
+            {this.state.gameStarts === true ? (
+              <Game
+                status={status}
+                noPointerEvents={this.state.noPointerEvents}
+                history={history}
+                step={this.state.step}
+                handleClick={this.handleClick}
+                restartGame={this.restartGame}
+                startGame={this.startGame}
+                jumpTo={this.jumpTo}
+              />
+            ) : (
+              <PregameOptions
+                className="PregameOptions"
+                playerOneName={this.state.playerOneName}
+                playerTwoName={this.state.playerTwoName}
+                changePlayerName={this.changePlayerName}
+                startGame={this.startGame}
+                gameIsVsPC={this.gameIsVsPC}
+                vsPC={this.state.vsPC}
+              />
+            )}
+          </div>
         </div>
-      </div>
+      </ThemeProvider>
     );
   }
 }

@@ -10,8 +10,8 @@ const PregameOptions = ({
   changePlayerName,
   vsPC
 }) => {
-  // eslint-disable-next-lines
-  const [vsMode, setvsMode] = useState(true);
+  // prettier-ignore
+  // const [vsMode, setvsMode] = useState(true);
   // const checkedButton = e => {
   //   const [checked, setChecked] = useState(false);
   //   // const onClick =
@@ -33,7 +33,6 @@ const PregameOptions = ({
   // bt1 = false;
   // bt2 = true;
 
-  // const classes = useStyles();
   const vsPcMode = vsPC ? "contained" : "outlined";
   const vsHumanMode = !vsPC ? "contained" : "outlined";
 
@@ -61,9 +60,6 @@ const PregameOptions = ({
       <div>
         <p>P1 Name:</p>
         <Input
-          // variant="outlined"
-          // color="primary"
-          // size="large"
           value={playerOneName}
           onChange={e => changePlayerName(e, "playerOneName")}
           placeholder="Basic usage"
@@ -76,7 +72,12 @@ const PregameOptions = ({
         />
       </div>
 
-      <Button variant="contained" color="secondary" type="submit">
+      <Button
+        style={{ marginTop: "15px" }}
+        variant="contained"
+        color="secondary"
+        type="submit"
+      >
         Start
       </Button>
 
