@@ -1,13 +1,23 @@
-import React, { useState } from 'react';
-import './All.css';
+import React, { useState } from "react";
+import "./All.css";
+import { Input, Button } from "@material-ui/core";
 
 const PregameOptions = ({
   startGame,
   gameIsVsPC,
   playerOneName,
   playerTwoName,
-  changePlayerName
+  changePlayerName,
+  vsPC
 }) => {
+  // eslint-disable-next-lines
+  const [vsMode, setvsMode] = useState(true);
+  // const checkedButton = e => {
+  //   const [checked, setChecked] = useState(false);
+  //   // const onClick =
+  // };
+  // const vsPC =
+
   //   const usePlayer = player => {
   //     const [name, setName] = useState('');
   //     const onChange = e => {
@@ -19,52 +29,68 @@ const PregameOptions = ({
   //     };
   //   };
   //   const p1 = usePlayer();
-  //   const p2 = usePlayer();
+
+  // bt1 = false;
+  // bt2 = true;
+
+  // const classes = useStyles();
+  const vsPcMode = vsPC ? "contained" : "outlined";
+  const vsHumanMode = !vsPC ? "contained" : "outlined";
 
   return (
     <form onSubmit={startGame}>
-      <label>
-        <input
-          type='radio'
+      <div>
+        <p>Mode: </p>
+        <Button
+          variant={`${vsPcMode}`}
+          color="primary"
           onClick={() => gameIsVsPC(true)}
-          id='HvCradio'
-          name='gameMode'
-        ></input>
-        Human vs Computer
-      </label>
-      <label>
-        <input
-          type='radio'
+        >
+          Human vs PC
+        </Button>
+
+        <Button
+          variant={`${vsHumanMode}`}
+          color="primary"
           onClick={() => gameIsVsPC(false)}
-          id='HvHradio'
-          name='gameMode'
-        ></input>
-        Human vs Human
-      </label>
-      <p>
-        Play:
-        <label>
-          <input type='radio' id='Xradio' name='XorO'></input>First
-        </label>
-        <label>
-          <input type='radio' id='Oradio' name='XorO'></input>Second
-        </label>
-      </p>
-      <p>P1 Name:</p>
-      {/* <input value={p1.name} onChange={e => p1.onChange(e)}></input> */}
-      <input
-        value={playerOneName}
-        onChange={e => changePlayerName(e, 'playerOneName')}
-      ></input>
-      <p>P2 Name:</p>
-      <input
-        value={playerTwoName}
-        onChange={e => changePlayerName(e, 'playerTwoName')}
-      />
-      {/* Human vs Computer Human vs Human
-      P1 Name: Player One
-      P2 Name: Player Two class='disable-me' ->pointer-events:none */}
-      <button type='submit'>Start</button>
+        >
+          Human vs Human
+        </Button>
+      </div>
+
+      <div>
+        <p>P1 Name:</p>
+        <Input
+          // variant="outlined"
+          // color="primary"
+          // size="large"
+          value={playerOneName}
+          onChange={e => changePlayerName(e, "playerOneName")}
+          placeholder="Basic usage"
+        />
+        <p>P2 Name:</p>
+        <Input
+          value={playerTwoName}
+          onChange={e => changePlayerName(e, "playerTwoName")}
+          placeholder="Basic usage"
+        />
+      </div>
+
+      <Button variant="contained" color="secondary" type="submit">
+        Start
+      </Button>
+
+      {/*
+       <p>
+         Play:
+         <Button>
+           <input type='radio' id='Xradio' name='XorO'></input>First
+         </Button>
+         <Button>
+           <input type='radio' id='Oradio' name='XorO'></input>Second
+         </Button>
+       </p>
+      */}
     </form>
   );
 };

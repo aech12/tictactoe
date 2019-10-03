@@ -1,8 +1,3 @@
-html,
-body {
-  height: 100%;
-}
-
 .game {
   margin: 10px;
 }
@@ -36,7 +31,7 @@ body {
 }
 
 ul {
-  width: 200px;
+  width: 350px;
 }
 li {
   list-style: none;
@@ -44,28 +39,34 @@ li {
 }
 
 button {
-  background: #00ff00;
+  background: #61c561;
   border-radius: 5px;
   cursor: pointer;
   outline: none;
   overflow: hidden;
 }
 
-@media all and (max-width: 230px) {
+@media all {
   .board {
-    max-width: 180px;
+    max-width: 305px;
+    max-height: 305px;
     display: flex;
-    flex-wrap: wrap;
   }
   .square {
-    height: 58px;
-    width: 58px;
+    height: 100px;
+    width: 100px;
   }
 }
-@media all and (min-width: 500px) {
-  .game {
+
+@media only screen and (min-width: 1024px) {
+  .board {
+    max-width: 305px;
+    max-height: 305px;
     display: flex;
-    justify-content: space-around;
+  }
+  .square {
+    height: 100px;
+    width: 100px;
   }
 }
 

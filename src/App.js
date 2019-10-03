@@ -1,22 +1,28 @@
-import React, { Component } from 'react';
-import './components/All.css';
-import Board from './components/Board';
-import PregameOptions from './components/PregameOptions';
-import { calculateWinner, checkIfGameIsOver } from './helper/usefulFunctions';
-import { minimax } from './helper/minimax';
+import React, { Component } from "react";
+import "./components/All.css";
+import "./App.css";
+import Game from "./containers/Game";
+import Board from "./components/Board";
+import PregameOptions from "./components/PregameOptions";
+import { calculateWinner, checkIfGameIsOver } from "./helper/usefulFunctions";
+import { minimax } from "./helper/minimax";
+import styles from "./styles.js";
+// import styled from 'styled-components';
+import "typeface-roboto";
+// import { makeStyles } from '@material-ui/core/styles';
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
       history: [{ squares: Array(9).fill(null) }],
-      currentPlayer: 'O',
+      currentPlayer: "O",
       step: 0,
-      playerOneName: 'P1',
-      playerTwoName: 'P2',
+      playerOneName: "P1",
+      playerTwoName: "P2",
       vsPC: true,
-      noPointerEvents: '',
-      gameStarts: false
+      noPointerEvents: "",
+      gameStarts: !false
     };
   }
 
@@ -25,13 +31,13 @@ class App extends Component {
     const history = this.state.history.slice(0, step + 1);
     const currentSquares = history[history.length - 1].squares.slice();
     const currentPlayer = this.state.currentPlayer;
-    const nextPlayer = currentPlayer === 'O' ? 'X' : 'O';
+    const nextPlayer = currentPlayer === "O" ? "X" : "O";
 
     if (checkIfGameIsOver(currentSquares, i)) {
       return;
     }
 
-    currentSquares[i] = currentPlayer === 'O' ? 'O' : 'X';
+    currentSquares[i] = currentPlayer === "O" ? "O" : "X";
 
     this.setState({
       history: history.concat([{ squares: currentSquares }]),
@@ -39,7 +45,7 @@ class App extends Component {
       step: step + 1
     });
     if (this.state.vsPC) {
-      this.setState({ noPointerEvents: 'no-pointer-events' });
+      this.setState({ noPointerEvents: "no-pointer-events" });
       setTimeout(() => {
         this.computerMakesMove();
       }, 300);
@@ -49,7 +55,7 @@ class App extends Component {
   jumpTo = i => {
     this.setState({
       step: i,
-      currentPlayer: i % 2 === 0 ? 'X' : 'O'
+      currentPlayer: i % 2 === 0 ? "X" : "O"
     });
   };
 
@@ -59,21 +65,17 @@ class App extends Component {
     });
   };
 
-  startGame = () => {
+  startGame = e => {
     // no pointer events until this is clicked
+    e.preventDefault();
     this.setState({ gameStarts: !this.state.gameStarts });
   };
 
   restartGame = () =>
     this.setState({ step: 0, history: [{ squares: Array(9).fill(null) }] });
 
-  gameIsVsPC = vsPC => {
-    vsPC = this.state.vsPC;
-    if (vsPC) {
-      this.setState({ vsPC });
-    } else {
-      this.setState({ vsPC });
-    }
+  gameIsVsPC = vsBoolean => {
+    this.setState({ vsPC: vsBoolean });
   };
 
   computerMakesMove = () => {
@@ -81,20 +83,19 @@ class App extends Component {
     const history = this.state.history.slice(0, step + 1);
     const currentSquares = history[history.length - 1].squares.slice();
     const currentPlayer = this.state.currentPlayer;
-    const nextPlayer = currentPlayer === 'O' ? 'X' : 'O';
+    const nextPlayer = currentPlayer === "O" ? "X" : "O";
 
+    let moveIndex = minimax(currentSquares, currentPlayer).index;
     if (checkIfGameIsOver(currentSquares, moveIndex)) {
       return;
     }
-    let moveIndex = minimax(currentSquares, currentPlayer).index;
-    console.log(moveIndex);
-    currentSquares[moveIndex] = this.state.currentPlayer === 'O' ? 'O' : 'X';
+    currentSquares[moveIndex] = this.state.currentPlayer === "O" ? "O" : "X";
 
     this.setState({
       history: history.concat([{ squares: currentSquares }]),
       currentPlayer: nextPlayer,
       step: step + 1,
-      noPointerEvents: ''
+      noPointerEvents: ""
     });
   };
 
@@ -102,7 +103,7 @@ class App extends Component {
     const history = this.state.history;
     const currentSquares = history[history.length - 1].squares.slice();
     let currentPlayerName =
-      this.state.currentPlayer === 'O'
+      this.state.currentPlayer === "O"
         ? this.state.playerOneName
         : this.state.playerTwoName;
     let status;
@@ -111,48 +112,47 @@ class App extends Component {
     if (winner) {
       status = `Winner is ${currentPlayerName}!`;
     } else if (currentSquares.every(squares => squares)) {
-      status = 'Draw!';
+      status = "Draw!";
     } else {
       status = `It's ${currentPlayerName}'s turn`;
     }
 
-    const goToMove = history.map((d, index) => {
-      let msg = `Turn #${index}`;
-      return (
-        <li key={index}>
-          <button onClick={() => this.jumpTo(index)}>{`${msg}`}</button>
-        </li>
-      );
-    });
+    // #353643 rgba(255, 255, 255, 0.70)
 
     return (
-      <div className='game'>
-        {this.state.gameStarts === true ? (
-          <div className=''>
-            <div className='leftside'>
-              <div className='status'>{status}</div>
-              <div className={`board ${this.state.noPointerEvents}`}>
-                <Board
-                  squares={history[this.state.step].squares}
-                  onClick={this.handleClick}
-                />
-              </div>
-            </div>
-            <div>
-              <button onClick={this.restartGame}>Play Again</button>
-              <button onClick={this.startGame}>Change Settings</button>
-            </div>
-            <ul>{goToMove}</ul>
-          </div>
-        ) : (
-          <PregameOptions
-            playerOneName={this.state.playerOneName}
-            playerTwoName={this.state.playerTwoName}
-            changePlayerName={this.changePlayerName}
-            startGame={this.startGame}
-            gameIsVsPC={this.gameIsVsPC}
-          />
-        )}
+      <div
+        className="App"
+        // style={{
+        //   height: "100vh",
+        //   width: "100vw",
+        //   display: "flex",
+        //   justifyContent: "center",
+        //   alignContent: "center"
+        // }}
+      >
+        <div className="Game">
+          {this.state.gameStarts === true ? (
+            <Game
+              status={status}
+              noPointerEvents={this.state.noPointerEvents}
+              history={history}
+              step={this.state.step}
+              handleClick={this.handleClick}
+              restartGame={this.restartGame}
+              startGame={this.startGame}
+              jumpTo={this.jumpTo}
+            />
+          ) : (
+            <PregameOptions
+              playerOneName={this.state.playerOneName}
+              playerTwoName={this.state.playerTwoName}
+              changePlayerName={this.changePlayerName}
+              startGame={this.startGame}
+              gameIsVsPC={this.gameIsVsPC}
+              vsPC={this.state.vsPC}
+            />
+          )}
+        </div>
       </div>
     );
   }

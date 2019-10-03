@@ -1,5 +1,12 @@
 .App {
   text-align: center;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  border: 3px red solid;
+  background: lightblue;
 }
 
 .App-logo {
@@ -28,5 +35,55 @@
   }
   to {
     transform: rotate(360deg);
+  }
+}
+
+.App {
+  text-align: center;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  background: lightblue;
+}
+
+.Game {
+  display: flex;
+  align-items: center;
+  position: fixed;
+  top: +10%;
+}
+
+.BoardScreen {
+  display: flex;
+  flex-direction: column;
+  top: +10%;
+}
+
+.leftside {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  top: +10%;
+}
+
+@media only screen and (min-width: 768px) {
+  .BoardScreen {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
+
+@media only screen and (min-width: 1024px) {
+  body {
+    background-color: lightblue;
+  }
+}
+
+@media only screen and (min-width: 1200px) {
+  body {
+    background-color: lightblue;
   }
 }
