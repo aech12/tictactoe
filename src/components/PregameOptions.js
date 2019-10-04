@@ -39,6 +39,9 @@ const PregameOptions = ({
   return (
     <form onSubmit={startGame}>
       <div>
+        <h1>TicTacToe</h1>
+      </div>
+      <div>
         <p>Mode: </p>
         <Button
           variant={`${vsPcMode}`}
