@@ -4,10 +4,11 @@ import "./App.css";
 import Game from "./containers/Game";
 import PregameOptions from "./components/PregameOptions";
 import { calculateWinner, checkIfGameIsOver } from "./helper/usefulFunctions";
-import { minimax } from "./helper/minimax";
+// import { minimax } from "./helper/minimax";
 import "typeface-roboto";
 import { ThemeProvider } from "@material-ui/styles";
 import { createMuiTheme } from "@material-ui/core/styles";
+import { computerMakesMove } from "./helper/computerMakesMove";
 
 const theme = createMuiTheme({
   palette: {
@@ -26,7 +27,7 @@ class App extends Component {
       playerTwoName: "P2",
       vsPC: true,
       noPointerEvents: "",
-      gameStarts: false
+      gameStarts: !false
     };
   }
 
@@ -49,17 +50,14 @@ class App extends Component {
       step: step + 1
     });
     if (this.state.vsPC) {
-      this.setState({ noPointerEvents: "no-pointer-events" });
-      setTimeout(() => {
-        this.computerMakesMove();
-      }, 300);
+      this.setState({ noPointerEvents: "none" });
     }
   };
 
   jumpTo = i => {
     this.setState({
       step: i,
-      currentPlayer: i % 2 === 0 ? "X" : "O"
+      currentPlayer: i % 2 === 0 ? "O" : "X"
     });
   };
 
@@ -70,7 +68,6 @@ class App extends Component {
   };
 
   startGame = e => {
-    // no pointer events until this is clicked
     e.preventDefault();
     this.setState({ gameStarts: !this.state.gameStarts });
   };
@@ -82,43 +79,52 @@ class App extends Component {
     this.setState({ vsPC: vsBoolean });
   };
 
-  computerMakesMove = () => {
-    const step = this.state.step;
-    const history = this.state.history.slice(0, step + 1);
-    const currentSquares = history[history.length - 1].squares.slice();
-    const currentPlayer = this.state.currentPlayer;
-    const nextPlayer = currentPlayer === "O" ? "X" : "O";
-
-    let moveIndex = minimax(currentSquares, currentPlayer).index;
-    if (checkIfGameIsOver(currentSquares, moveIndex)) {
-      return;
-    }
-    currentSquares[moveIndex] = this.state.currentPlayer === "O" ? "O" : "X";
-
-    this.setState({
-      history: history.concat([{ squares: currentSquares }]),
-      currentPlayer: nextPlayer,
-      step: step + 1,
-      noPointerEvents: ""
-    });
+  setNewStateWithComputerMove = (history, step) => {
+    setTimeout(() => {
+      this.setState({
+        history,
+        currentPlayer: this.state.currentPlayer === "O" ? "X" : "O",
+        step,
+        noPointerEvents: ""
+      });
+    }, 1000);
   };
 
   render() {
-    const history = this.state.history;
+    const step = this.state.step;
+    const history = this.state.history.slice(0, step + 1);
     const currentSquares = history[history.length - 1].squares.slice();
+    let currentPlayer = this.state.currentPlayer;
     let currentPlayerName =
-      this.state.currentPlayer === "O"
+      currentPlayer === "O"
+        ? this.state.playerOneName
+        : this.state.playerTwoName;
+    let nextPlayer =
+      currentPlayer === "X"
         ? this.state.playerOneName
         : this.state.playerTwoName;
     let status;
     const winner = calculateWinner(currentSquares);
 
     if (winner) {
-      status = `Winner is ${currentPlayerName}!`;
+      status = `Winner is ${nextPlayer}!`;
     } else if (currentSquares.every(squares => squares)) {
       status = "Draw!";
     } else {
       status = `It's ${currentPlayerName}'s turn`;
+    }
+
+    if (currentPlayer === "X") {
+      const computerMadeMove = computerMakesMove(
+        step,
+        history,
+        currentSquares,
+        currentPlayer
+      );
+      this.setNewStateWithComputerMove(
+        computerMadeMove.history,
+        computerMadeMove.step
+      );
     }
 
     // #353643 rgba(255, 255, 255, 0.70)
@@ -126,7 +132,10 @@ class App extends Component {
     return (
       <ThemeProvider theme={theme}>
         <div className="App">
-          <div className="Game">
+          <div
+            className="Game"
+            style={{ pointerEvents: `${this.state.noPointerEvents}` }}
+          >
             {this.state.gameStarts === true ? (
               <Game
                 status={status}

@@ -14,7 +14,7 @@ const Game = ({
   startGame,
   jumpTo
 }) => {
-  const goToMove = history.map((d, index) => {
+  const goToMove = history.map((squares, index) => {
     let msg = `Turn #${index}`;
     return (
       <li key={index}>
