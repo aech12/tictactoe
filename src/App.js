@@ -27,7 +27,7 @@ class App extends Component {
       playerTwoName: "P2",
       vsPC: true,
       noPointerEvents: "",
-      gameStarts: !false
+      gameStarts: false
     };
   }
 
