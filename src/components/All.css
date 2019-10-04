@@ -6,6 +6,10 @@
     border: 1px solid #999;
     background: white;
   }
+  .status {
+    background: #f50057;
+    color: white;
+  }
 }
 @media (prefers-color-scheme: dark) {
   .square {
@@ -14,14 +18,15 @@
     color: #ccbbbb;
   }
   .status {
-    color: #080808;
+    color: #f5f5f5;
+    background: rgb(204, 0, 72);
   }
 }
 
 .status {
   width: 210px;
   margin-bottom: 10px;
-  background: #49ff79;
+  font-weight: bold;
 }
 
 .board {
@@ -43,6 +48,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+input {
+  color: white;
 }
 
 ul {

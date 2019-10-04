@@ -63,6 +63,7 @@ const PregameOptions = ({
       <div>
         <p>P1 Name:</p>
         <Input
+          defaultValue="secondary"
           value={playerOneName}
           onChange={e => changePlayerName(e, "playerOneName")}
           placeholder="Basic usage"
@@ -73,6 +74,8 @@ const PregameOptions = ({
           onChange={e => changePlayerName(e, "playerTwoName")}
           placeholder="Basic usage"
         />
+        {console.log("input", Input)}
+        {console.log("b", Button)}
       </div>
 
       <Button

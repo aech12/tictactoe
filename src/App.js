@@ -4,15 +4,46 @@ import "./App.css";
 import Game from "./containers/Game";
 import PregameOptions from "./components/PregameOptions";
 import { calculateWinner, checkIfGameIsOver } from "./helper/usefulFunctions";
-// import { minimax } from "./helper/minimax";
 import "typeface-roboto";
 import { ThemeProvider } from "@material-ui/styles";
 import { createMuiTheme } from "@material-ui/core/styles";
 import { computerMakesMove } from "./helper/computerMakesMove";
+import { fade } from "@material-ui/core/styles/colorManipulator";
 
-const theme = createMuiTheme({
+const lightTheme = createMuiTheme({
   palette: {
-    primary: { main: "#353643" }
+    primary: { main: "#353643" },
+    secondary: { main: "#f50057" }
+  }
+});
+const darkTheme = createMuiTheme({
+  palette: {
+    primary: { main: "#393d3f" },
+    secondary: { main: "#cc0048" }
+  },
+  overrides: {
+    MuiButton: {
+      raisedPrimary: {
+        color: "#00ed00"
+      },
+      root: {
+        // border: "1px solid #00a300"
+      },
+      outlinedPrimary: {
+        color: "#d2cfc8",
+        borderColor: fade("#fff", 0.5)
+      }
+    },
+    MuiInput: {
+      root: {
+        color: "#d0d0d0"
+      },
+      underline: {
+        "&:before": {
+          borderBottomColor: fade("#fff", 0.1)
+        }
+      }
+    }
   }
 });
 
@@ -27,8 +58,15 @@ class App extends Component {
       playerTwoName: "P2",
       vsPC: true,
       noPointerEvents: "",
-      gameStarts: false
+      gameStarts: false,
+      darkMode: false
     };
+  }
+
+  componentDidMount() {
+    if (matchMedia("(prefers-color-scheme: dark)").matches) {
+      this.setState({ darkMode: true });
+    }
   }
 
   handleClick = i => {
@@ -89,7 +127,10 @@ class App extends Component {
       });
     }, 1000);
   };
-
+  // rgb(0, 160, 42) status
+  // rgb(229, 227, 223); font
+  // rgb(57, 61, 63); button bg
+  // #f50057; start button bg
   render() {
     const step = this.state.step;
     const history = this.state.history.slice(0, step + 1);
@@ -130,7 +171,7 @@ class App extends Component {
     // #353643 rgba(255, 255, 255, 0.70)
 
     return (
-      <ThemeProvider theme={theme}>
+      <ThemeProvider theme={this.state.darkMode ? darkTheme : lightTheme}>
         <div className="App">
           <div
             className="Game"
