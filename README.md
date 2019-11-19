@@ -1,5 +1,6 @@
-Tic tac toe made with React.
-History is stored an object with arrays. Each array contains the board at that current step. Computer uses the Minimax algo to play. No caching.
+Tictactoe made with React.
+History of each move can be accessed (the whole board is saved as an array).
+Single-player available. The computer makes moves through a minmax algorithm.
 
 ---
 Todo
@@ -9,9 +10,9 @@ Functionality
 - Refactor code, it's messy and bloated
 - Add option to play first or second (!)
 - Add caching to Minimax (!)
-- Check test 'counter winning moves' with board 'testCase'. Sometimes it fails.
-- Implement ref maybe. Let PregameOptions manage playerName state
+- Implement ref maybe? Let PregameOptions manage playerName state
 
 Bugs (!)
-- Style - Board breaks with small screen (300px)
-- When clicking in history and playing against PC it doesnt work
+- Board breaks with smallest screens (300px)(CSS)
+- When game is over, computer still makes a move, as shown in the ul
+- Test 'counter winning moves' with board 'testCase' sometimes fails

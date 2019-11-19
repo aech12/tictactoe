@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import "./All.css";
 import { Input, Button } from "@material-ui/core";
 
@@ -74,8 +74,7 @@ const PregameOptions = ({
           onChange={e => changePlayerName(e, "playerTwoName")}
           placeholder="Basic usage"
         />
-        {console.log("input", Input)}
-        {console.log("b", Button)}
+        {/* {console.log("b", Button)} */}
       </div>
 
       <Button
