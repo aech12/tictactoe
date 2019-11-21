@@ -14,7 +14,7 @@
 @media (prefers-color-scheme: dark) {
   .square {
     border: 1px solid #ada6a6;
-    background: #3c4a56;
+    background: #2c3942;
     color: #ccbbbb;
   }
   .status {

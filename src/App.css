@@ -6,7 +6,7 @@
 }
 @media (prefers-color-scheme: dark) {
   .App {
-    background: rgb(58, 72, 83);
+    background: #2c3942;
     color: #d0d0d0;
   }
 }
